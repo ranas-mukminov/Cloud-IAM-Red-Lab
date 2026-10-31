@@ -1,3 +1,23 @@
+> **Problem:** cloud IAM privilege escalation is a graph problem — one trust step too many, and a junior role reaches admin — but practising it on a real account risks real resources.
+>
+> **What this is:** a cloud IAM privilege escalation lab on simulated, fictional data: an escalation-path detector, remediation guidance and tests. **No real cloud, no credentials, no API calls.**
+>
+> **Who it is for:** cloud engineers and auditors learning to read policies, follow trust chains and spot the step that grants too much.
+>
+> **Quickstart:**
+>
+> ```bash
+> git clone https://github.com/ranas-mukminov/Cloud-IAM-Red-Lab.git
+> cd Cloud-IAM-Red-Lab
+> python3 lab/detector.py --data data/simulated_iam.json
+> python3 -m unittest discover -s tests -v
+> ```
+>
+> **Sample result (verified):** the detector finds the planted chain `lab-junior → lab-mid → lab-senior → lab-admin`, plus wildcard and orphan privilege-granting roles; the safe auditor role stays clean. Tests: `9 OK`.
+>
+[![CI](https://github.com/ranas-mukminov/Cloud-IAM-Red-Lab/actions/workflows/tests.yml/badge.svg)](https://github.com/ranas-mukminov/Cloud-IAM-Red-Lab/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+---
 # Cloud-IAM-Red-Lab
 
 A cloud IAM privilege-escalation lab that runs entirely on simulated
