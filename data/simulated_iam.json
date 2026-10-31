@@ -1,0 +1,38 @@
+{
+  "note": "Fictional lab data only. No real account, role, or policy is represented here.",
+  "roles": {
+    "lab-developer": {
+      "trust": ["lab-developer-user"],
+      "policies": ["lab-read-only"],
+      "can_assume": ["lab-deployer"]
+    },
+    "lab-deployer": {
+      "trust": ["lab-developer"],
+      "policies": ["lab-deploy"],
+      "can_assume": ["lab-admin"]
+    },
+    "lab-admin": {
+      "trust": ["lab-deployer"],
+      "policies": ["lab-administrator"],
+      "can_assume": []
+    },
+    "lab-auditor": {
+      "trust": ["lab-auditor-user"],
+      "policies": ["lab-read-only"],
+      "can_assume": []
+    },
+    "lab-orphan": {
+      "trust": ["lab-developer"],
+      "policies": ["lab-attach-policy"],
+      "can_assume": []
+    }
+  },
+  "policies": {
+    "lab-read-only": ["s3:GetObject", "ec2:DescribeInstances"],
+    "lab-deploy": ["s3:PutObject", "lambda:UpdateFunctionCode"],
+    "lab-administrator": ["*"],
+    "lab-attach-policy": ["iam:AttachUserPolicy", "iam:PutUserPolicy"]
+  },
+  "privilege_granting_actions": ["iam:AttachUserPolicy", "iam:PutUserPolicy", "iam:CreatePolicy"],
+  "admin_policy": "lab-administrator"
+}
