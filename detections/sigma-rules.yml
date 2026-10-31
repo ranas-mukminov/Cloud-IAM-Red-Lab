@@ -1,0 +1,47 @@
+title: Cloud Lab — AssumeRole Chain To Admin
+id: lab-cloud-001
+status: experimental
+description: Lab-format rule for an AssumeRole chain ending at an admin role.
+logsource:
+  product: cloud-iam-lab
+  service: cloudtrail
+detection:
+  selection:
+    eventName: 'AssumeRole'
+    target_role: 'lab-admin'
+  condition: selection
+level: high
+tags:
+  - attack.t1078
+---
+title: Cloud Lab — Privilege Granting Policy Attached
+id: lab-cloud-002
+status: experimental
+description: Lab-format rule for AttachUserPolicy or PutUserPolicy events.
+logsource:
+  product: cloud-iam-lab
+  service: cloudtrail
+detection:
+  selection:
+    eventName:
+      - 'AttachUserPolicy'
+      - 'PutUserPolicy'
+  condition: selection
+level: high
+tags:
+  - attack.t1098
+---
+title: Cloud Lab — Wildcard Policy Created
+id: lab-cloud-003
+status: experimental
+description: Lab-format rule for a policy document containing a wildcard action.
+logsource:
+  product: cloud-iam-lab
+  service: cloudtrail
+detection:
+  selection:
+    policy_document|contains: '"iam:*"'
+  condition: selection
+level: high
+tags:
+  - attack.t1098

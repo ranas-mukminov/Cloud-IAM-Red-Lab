@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "lab"))
-from detector import find_admin_paths, find_assumption_chains, find_privilege_granting_roles, load  # noqa: E402
+from detector import (find_admin_paths, find_assumption_chains, find_multi_hop_chains, find_privilege_granting_roles, find_wildcard_policies, load)  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "simulated_iam.json"
 
@@ -41,3 +41,25 @@ class TestDetector(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestNewPatterns(unittest.TestCase):
+    def setUp(self):
+        self.data = load(DATA)
+
+    def test_multi_hop_chain_found(self):
+        chains = [c["chain"] for c in find_multi_hop_chains(self.data)]
+        self.assertIn(["lab-junior", "lab-mid", "lab-senior", "lab-admin"], chains)
+
+    def test_wildcard_role_flagged(self):
+        roles = {r["role"]: r["actions"] for r in find_wildcard_policies(self.data)}
+        self.assertIn("lab-wildcard", roles)
+        self.assertIn("iam:*", roles["lab-wildcard"])
+
+    def test_safe_role_not_wildcard(self):
+        roles = {r["role"] for r in find_wildcard_policies(self.data)}
+        self.assertNotIn("lab-auditor", roles)
+
+    def test_original_admin_path_still_found(self):
+        chains = [p["chain"] for p in find_admin_paths(self.data)]
+        self.assertIn(["lab-developer", "lab-deployer", "lab-admin"], chains)

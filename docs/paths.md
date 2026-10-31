@@ -1,4 +1,4 @@
-# The three planted paths
+# The planted paths
 
 All names are fictional lab names. The detector output for each path
 is reproduced in words here so the walkthrough can be followed
@@ -29,3 +29,25 @@ role, whatever its name says.
 The detector reports no admin path and no privilege-granting action
 for it. A detector that flags everything is useless; the safe role
 exists to prove this one does not.
+
+
+## Path 4 — Long assume-role chain (multi-hop)
+
+`lab-junior` can assume `lab-mid`, `lab-mid` can assume
+`lab-senior`, and `lab-senior` can assume `lab-admin`. Each hop
+holds only a read-only policy on its own, so a per-role review
+finds nothing — the detector's multi-hop search reports the full
+chain `lab-junior -> lab-mid -> lab-senior -> lab-admin`.
+
+Lesson: privilege is transitive, and long chains hide it. Search
+chains, not roles.
+
+## Path 5 — Wildcard policy
+
+`lab-wildcard` holds a policy with `iam:*` and `s3:*`. The
+detector flags both wildcard actions. A wildcard is not a
+convenience: it is a grant of every action in that service, and
+it must be scoped down to the actions actually used.
+
+Lesson: audit wildcards first. They are the smallest list and
+the largest blast radius.

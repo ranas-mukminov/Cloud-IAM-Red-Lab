@@ -2,37 +2,122 @@
   "note": "Fictional lab data only. No real account, role, or policy is represented here.",
   "roles": {
     "lab-developer": {
-      "trust": ["lab-developer-user"],
-      "policies": ["lab-read-only"],
-      "can_assume": ["lab-deployer"]
+      "trust": [
+        "lab-developer-user"
+      ],
+      "policies": [
+        "lab-read-only"
+      ],
+      "can_assume": [
+        "lab-deployer"
+      ]
     },
     "lab-deployer": {
-      "trust": ["lab-developer"],
-      "policies": ["lab-deploy"],
-      "can_assume": ["lab-admin"]
+      "trust": [
+        "lab-developer"
+      ],
+      "policies": [
+        "lab-deploy"
+      ],
+      "can_assume": [
+        "lab-admin"
+      ]
     },
     "lab-admin": {
-      "trust": ["lab-deployer"],
-      "policies": ["lab-administrator"],
+      "trust": [
+        "lab-deployer"
+      ],
+      "policies": [
+        "lab-administrator"
+      ],
       "can_assume": []
     },
     "lab-auditor": {
-      "trust": ["lab-auditor-user"],
-      "policies": ["lab-read-only"],
+      "trust": [
+        "lab-auditor-user"
+      ],
+      "policies": [
+        "lab-read-only"
+      ],
       "can_assume": []
     },
     "lab-orphan": {
-      "trust": ["lab-developer"],
-      "policies": ["lab-attach-policy"],
+      "trust": [
+        "lab-developer"
+      ],
+      "policies": [
+        "lab-attach-policy"
+      ],
+      "can_assume": []
+    },
+    "lab-junior": {
+      "trust": [
+        "lab-junior-user"
+      ],
+      "policies": [
+        "lab-read-only"
+      ],
+      "can_assume": [
+        "lab-mid"
+      ]
+    },
+    "lab-mid": {
+      "trust": [
+        "lab-junior"
+      ],
+      "policies": [
+        "lab-read-only"
+      ],
+      "can_assume": [
+        "lab-senior"
+      ]
+    },
+    "lab-senior": {
+      "trust": [
+        "lab-mid"
+      ],
+      "policies": [
+        "lab-read-only"
+      ],
+      "can_assume": [
+        "lab-admin"
+      ]
+    },
+    "lab-wildcard": {
+      "trust": [
+        "lab-developer"
+      ],
+      "policies": [
+        "lab-wildcard"
+      ],
       "can_assume": []
     }
   },
   "policies": {
-    "lab-read-only": ["s3:GetObject", "ec2:DescribeInstances"],
-    "lab-deploy": ["s3:PutObject", "lambda:UpdateFunctionCode"],
-    "lab-administrator": ["*"],
-    "lab-attach-policy": ["iam:AttachUserPolicy", "iam:PutUserPolicy"]
+    "lab-read-only": [
+      "s3:GetObject",
+      "ec2:DescribeInstances"
+    ],
+    "lab-deploy": [
+      "s3:PutObject",
+      "lambda:UpdateFunctionCode"
+    ],
+    "lab-administrator": [
+      "*"
+    ],
+    "lab-attach-policy": [
+      "iam:AttachUserPolicy",
+      "iam:PutUserPolicy"
+    ],
+    "lab-wildcard": [
+      "iam:*",
+      "s3:*"
+    ]
   },
-  "privilege_granting_actions": ["iam:AttachUserPolicy", "iam:PutUserPolicy", "iam:CreatePolicy"],
+  "privilege_granting_actions": [
+    "iam:AttachUserPolicy",
+    "iam:PutUserPolicy",
+    "iam:CreatePolicy"
+  ],
   "admin_policy": "lab-administrator"
 }

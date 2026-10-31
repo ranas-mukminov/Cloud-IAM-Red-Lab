@@ -39,3 +39,8 @@ python3 -m unittest discover -s tests -v
 - It does not contain, use, or teach the handling of real credentials.
 - It does not demonstrate an escalation against a real account. The
   paths it finds are planted in fictional data, and the report says so.
+
+## Recent additions
+
+- New patterns: a long multi-hop assume-role chain (`lab-junior -> lab-mid -> lab-senior -> lab-admin`) and wildcard policies (`iam:*`, `s3:*`), with detector coverage, remediation, and tests.
+- `docs/attack-mapping.md` and `detections/sigma-rules.yml`: illustrative MITRE ATT&CK mapping and Sigma-style detection rules in lab log format.

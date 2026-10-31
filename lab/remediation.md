@@ -42,3 +42,19 @@ Keep a detector like this one in regular use: on every policy change,
 and on a schedule. A path that appears after a change is a finding
 about the change, and it is cheaper to fix before the change ships
 than after.
+
+
+## Assume-role chains
+
+A chain is only as safe as its weakest hop. Review the whole
+chain, not one role: cap chain length where the platform allows,
+require an external ID or MFA for sensitive hops, and alert on
+assumption of a role that can itself assume further roles.
+
+## Wildcard policies
+
+Replace `iam:*` and `s3:*` with the smallest action list the role
+actually uses. A wildcard policy on a role that any other role can
+assume is effectively an admin grant, whatever the role is called.
+Audit wildcard policies first: they are few, and they are the
+highest-leverage findings in the data.
